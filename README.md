@@ -1,18 +1,24 @@
-# Simple C Compiler Documentation
+# Basic C Compiler
 
-## 1. General Overview
-This compiler implements a subset of the C programming language with support for basic data types, control structures, and arithmetic/logical operations. The compiler performs lexical analysis, syntax checking, and semantic analysis including type checking.
+This compiler implements a subset of the C programming language focusing on fundamental operations and type checking. It parses and evaluates statements written in a C-like syntax, supporting basic data types (int and bool), arithmetic operations, and control structures.
 
-### Key Features:
-- Integer and Boolean data types
+## Features
+
+### Core Features:
+- Basic data types (int, bool)
 - Variable declarations and assignments
+- Arithmetic operations (+, -, *, /)
+- Logical operations (and, or, not)
+- Comparison operations (>, <, >=, <=, ==, !=)
 - Control structures (if-else, while)
-- Arithmetic and logical operations
 - Print and return statements
-- Type checking and error reporting
 
-## 2. Grammar
-The language follows this grammar:
+### Type System:
+- Static type checking
+- Type verification for operations
+- Error reporting with line numbers
+
+## Grammar
 
 ```bnf
 program -> statement_list | ε
@@ -38,15 +44,138 @@ if_statement -> IF ( expression ) { statement_list }
               | IF ( expression ) { statement_list } ELSE { statement_list }
 
 while_statement -> WHILE ( expression ) { statement_list }
-
-expression -> simple_expression
-            | expression AND simple_expression
-            | expression OR simple_expression
 ```
 
-## 3. Input Format Description
+## Example Programs
 
-### Valid Input Examples:
+### Valid Programs
+
+#### 1. Control Structures (inputs/valid/control_flow.txt)
+```c
+int x = 5;
+int y = 10;
+bool flag = true;
+
+if (x < y) {
+    print x;    // Will print 5
+} else {
+    print y;
+}
+
+while (flag) {
+    x = x + 1;
+    if (x >= 10) {
+        flag = false;
+    }
+}
+
+print x;    // Will print 10
+```
+This example demonstrates:
+- Variable initialization
+- If-else statements
+- While loops
+- Boolean conditions
+- Arithmetic operations
+
+#### 2. Operations Test (inputs/valid/operations_test.txt)
+```c
+// Arithmetic Operations
+int a = 15;
+int b = 3;
+int result;
+
+result = a + b;    
+print result;      // Prints 18
+
+result = a - b;    
+print result;      // Prints 12
+
+result = a * b;    
+print result;      // Prints 45
+
+result = a / b;    
+print result;      // Prints 5
+
+// Boolean Operations
+bool test = true;
+bool other = false;
+bool final;
+
+final = test && other;  
+print final;            // Prints false
+
+final = test || other;  
+print final;            // Prints true
+```
+This example shows:
+- All arithmetic operations
+- Logical operations
+- Mixed declarations and assignments
+- Print statements
+
+### Invalid Programs
+
+#### 1. Type Mismatch (inputs/invalid/type_mismatch.txt)
+```c
+int x = 5;
+bool y = x;  // Error: Cannot initialize bool with int
+```
+Error: Type mismatch in initialization - Cannot assign integer value to boolean variable
+
+#### 2. Undefined Variable (inputs/invalid/undefined_var.txt)
+```c
+int a = 5;
+b = 10;  // Error: b not declared
+```
+Error: Variable 'b' has not been defined
+
+#### 3. Invalid Operation (inputs/invalid/invalid_operation.txt)
+```c
+bool flag = true;
+bool other = false;
+bool result = flag + other;  // Error: Cannot add booleans
+```
+Error: Cannot perform addition between boolean operands
+
+#### 4. Division by Zero (inputs/invalid/div_by_zero.txt)
+```c
+int x = 5;
+int y = 0;
+int result = x / y;  // Error: Division by zero
+```
+Error: Division by zero
+
+#### 5. Variable Redeclaration (inputs/invalid/var_redeclaration.txt)
+```c
+int x = 5;
+int x = 10;  // Error: x already declared
+```
+Error: Variable 'x' already declared
+
+#### 6. Invalid Token (inputs/invalid/invalid_token.txt)
+```c
+gibberish  // Error: Unrecognized token
+```
+Error: Lexical error - Unrecognized character
+
+### Directory Structure for input files
+```
+inputs/
+├── valid/
+│   ├── control_flow.txt
+│   └── operations_test.txt
+└── invalid/
+    ├── type_mismatch.txt
+    ├── undefined_var.txt
+    ├── invalid_operation.txt
+    ├── div_by_zero.txt
+    ├── var_redeclaration.txt
+    └── invalid_token.txt
+```
+
+## Valid Input Examples
+
 ```c
 // Variable declarations and initialization
 int x = 5;
@@ -59,7 +188,6 @@ if (x > 0) {
     x = 0;
 }
 
-// While loop
 while (flag) {
     x = x + 1;
     if (x > 10) {
@@ -68,14 +196,23 @@ while (flag) {
 }
 ```
 
+## Type Rules and Restrictions
+
 ### Type Rules:
 - Arithmetic operations (+, -, *, /) only work with integers
 - Logical operations (and, or, not) only work with booleans
 - Comparison operations return boolean values
 - Variables must be declared before use
-- Type mismatch in assignments will cause errors
 
-## 4. Running Instructions
+### Invalid Operations:
+```c
+x = 5 + true;              // Cannot mix int and bool
+bool result = 5 or 5;      // Logical operations need booleans
+int res = true + true;     // Cannot add booleans
+print (12 and true);       // Invalid types for AND
+```
+
+## Building and Running
 
 ### Prerequisites:
 - Flex
@@ -83,18 +220,25 @@ while (flag) {
 - GCC
 - Make
 
-### Building the Compiler:
-1. Clone or download the source code
-2. Navigate to the project directory
-3. Run the following commands:
+### Build Commands:
 ```bash
-make clean  # Clean any previous builds
-make        # Build the compiler
+# Using make
+make clean
+make
+
+# Manual build
+flex lexer.l
+bison -d parser.y
+gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler.exe
 ```
 
 ### Running the Compiler:
 ```bash
-compiler.exe < ../test/valid-inputs/valid_input2.txt
+# With input file
+./
+
+# Interactive mode
+./compiler.exe
 ```
 
 ### Common Error Messages:
@@ -103,26 +247,31 @@ compiler.exe < ../test/valid-inputs/valid_input2.txt
 - "Type mismatch" - Invalid type in operation or assignment
 - "Division by zero" - Attempting to divide by zero
 
-## 5. Implementation Details
+## Implementation Details
 
-### Symbol Table:
-- Implemented as a dynamic linked list
-- Stores variable names, types, and values
-- Supports lookup and insertion operations
+### Components:
+1. Lexical Analyzer (lexer.l)
+    - Tokenizes input
+    - Handles comments and whitespace
 
-### Type Checking:
-- Static type checking during compilation
-- Type verification for operations
-- Error reporting with line numbers
+2. Parser (parser.y)
+    - Implements grammar rules
+    - Performs type checking
+    - Handles error reporting
 
-### Error Handling:
-- Syntax errors with line numbers
-- Type mismatch errors
-- Runtime error detection (e.g., division by zero)
+3. Symbol Table
+    - Dynamic linked list implementation
+    - Stores variable information
+    - Supports lookup and insertion
 
-## 6. Limitations
+4. Operations
+    - Type-checked arithmetic operations
+    - Logical operations
+    - Comparison operations
+
+## Limitations
 - No function declarations/calls
 - No arrays or pointers
 - Limited to int and bool types
-- No string operations
 - Single scope (no nested scopes)
+- Control structures are parsed but execution flow is not fully implemented
