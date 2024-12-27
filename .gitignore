@@ -9,6 +9,8 @@ parser.tab.h
 debug.log
 src/nul
 
+# Compiled files
+.idea
 # Compiled Object files
 *.o
 *.obj
