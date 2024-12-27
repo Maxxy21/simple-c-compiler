@@ -60,11 +60,15 @@ declaration: type_specifier IDENTIFIER {
                 add_symbol(symbol);
             }
           | type_specifier IDENTIFIER '=' expression {
-                Symbol* symbol = create_symbol($2, $1);
-                if (symbol->type != $4->type) {
-                    yyerror("Type mismatch in initialization");
+                if ($1 != $4->type) {
+                    fprintf(stderr, "Error at line %d: Cannot initialize '%s' (%s) with value of type %s\n",
+                            line_number, $2,
+                            $1 == TYPE_BOOL ? "bool" : "int",
+                            $4->type == TYPE_BOOL ? "bool" : "int");
+                    exit(1);
                 }
-                if (symbol->type == TYPE_INT) {
+                Symbol* symbol = create_symbol($2, $1);
+                if ($1 == TYPE_INT) {
                     symbol->value.int_val = $4->value.int_val;
                 } else {
                     symbol->value.bool_val = $4->value.bool_val;
@@ -80,10 +84,17 @@ type_specifier: INT  { $$ = TYPE_INT; }
 assignment: IDENTIFIER '=' expression {
                 Symbol* symbol = lookup_symbol($1);
                 if (symbol == NULL) {
-                    yyerror("Undefined variable");
+                    fprintf(stderr, "Error at line %d: Undefined variable '%s'\n",
+                            line_number, $1);
+                    exit(1);
                 }
                 if (symbol->type != $3->type) {
-                    yyerror("Type mismatch in assignment");
+                    fprintf(stderr, "Error at line %d: Cannot assign %s value to %s variable '%s'\n",
+                            line_number,
+                            $3->type == TYPE_BOOL ? "bool" : "int",
+                            symbol->type == TYPE_BOOL ? "bool" : "int",
+                            symbol->name);
+                    exit(1);
                 }
                 if (symbol->type == TYPE_INT) {
                     symbol->value.int_val = $3->value.int_val;
@@ -93,23 +104,43 @@ assignment: IDENTIFIER '=' expression {
             }
           ;
 
-if_statement: IF '(' expression ')' '{' statement_list '}'
-            | IF '(' expression ')' '{' statement_list '}' ELSE '{' statement_list '}'
+if_statement: IF '(' expression ')' '{' statement_list '}' {
+                if ($3->type != TYPE_BOOL) {
+                    fprintf(stderr, "Error at line %d: Condition in if statement must be boolean, got '%s' (%s)\n",
+                            line_number, $3->name, $3->type == TYPE_INT ? "int" : "bool");
+                    exit(1);
+                }
+            }
+            | IF '(' expression ')' '{' statement_list '}' ELSE '{' statement_list '}' {
+                if ($3->type != TYPE_BOOL) {
+                    fprintf(stderr, "Error at line %d: Condition in if statement must be boolean, got '%s' (%s)\n",
+                            line_number, $3->name, $3->type == TYPE_INT ? "int" : "bool");
+                    exit(1);
+                }
+            }
             ;
 
-while_statement: WHILE '(' expression ')' '{' statement_list '}'
-               ;
+while_statement: WHILE '(' expression ')' '{' statement_list '}' {
+                if ($3->type != TYPE_BOOL) {
+                    fprintf(stderr, "Error at line %d: Condition in while statement must be boolean, got '%s' (%s)\n",
+                            line_number, $3->name, $3->type == TYPE_INT ? "int" : "bool");
+                    exit(1);
+                }
+            }
+            ;
 
 print_statement: PRINT expression {
                     if ($2->type == TYPE_INT) {
                         printf("%d\n", $2->value.int_val);
                     } else {
-                        printf("%s\n", $2->value.bool_val ? "true" : "false");  // This was printing just the first character
+                        printf("%s\n", $2->value.bool_val ? "true" : "false");
                     }
                 }
               ;
 
-return_statement: RETURN expression
+return_statement: RETURN expression {
+                    // Could add type checking here if needed
+                }
                 | RETURN
                 ;
 
@@ -147,7 +178,9 @@ factor: INT_LITERAL {
       | IDENTIFIER {
             Symbol* symbol = lookup_symbol($1);
             if (symbol == NULL) {
-                yyerror("Undefined variable");
+                fprintf(stderr, "Error at line %d: Undefined variable '%s'\n",
+                        line_number, $1);
+                exit(1);
             }
             $$ = symbol;
         }
@@ -155,7 +188,9 @@ factor: INT_LITERAL {
       | NOT factor        { $$ = not($2); }
       | '-' factor %prec UMINUS {
             if ($2->type != TYPE_INT) {
-                yyerror("Unary minus requires integer operand");
+                fprintf(stderr, "Error at line %d: Unary minus cannot be applied to '%s' (%s)\n",
+                        line_number, $2->name, "bool");
+                exit(1);
             }
             Symbol* result = create_symbol("temp", TYPE_INT);
             result->value.int_val = -$2->value.int_val;

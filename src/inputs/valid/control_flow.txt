@@ -3,7 +3,7 @@ int y = 10;
 bool flag = true;
 
 if (x < y) {
-    print x;
+    print x;    // Will print 5
 } else {
     print y;
 }
@@ -15,4 +15,4 @@ while (flag) {
     }
 }
 
-print x;
+print x;    // Will print 10

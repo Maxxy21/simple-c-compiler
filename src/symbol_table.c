@@ -3,6 +3,7 @@
 #include <string.h>
 #include "symbol_table.h"
 
+extern int line_number;  // line number from lexer.l
 static SymbolTable* table;
 
 void init_symbol_table(void) {
@@ -41,7 +42,8 @@ Symbol* lookup_symbol(char* name) {
 void add_symbol(Symbol* symbol) {
     // Check if symbol already exists
     if (lookup_symbol(symbol->name) != NULL) {
-        fprintf(stderr, "Error: Variable '%s' already defined\n", symbol->name);
+        fprintf(stderr, "Error at line %d: Variable '%s' already declared\n",
+                line_number, symbol->name);
         exit(1);
     }
 
@@ -55,6 +57,18 @@ void add_symbol(Symbol* symbol) {
         table->tail->next = symbol;
         table->tail = symbol;
     }
+}
+
+void free_symbol_table(void) {
+    Symbol* current = table->head;
+    while (current != NULL) {
+        Symbol* next = current->next;
+        free(current->name);
+        free(current);
+        current = next;
+    }
+    free(table);
+    table = NULL;
 }
 
 void print_symbol_table(void) {
@@ -76,16 +90,4 @@ void print_symbol_table(void) {
         current = current->next;
     }
     printf("\n");
-}
-
-void free_symbol_table(void) {
-    Symbol* current = table->head;
-    while (current != NULL) {
-        Symbol* next = current->next;
-        free(current->name);   // Free the name string
-        free(current);         // Free the symbol structure
-        current = next;
-    }
-    free(table);              // Free the table structure itself
-    table = NULL;             // Set to NULL to prevent use after free
 }

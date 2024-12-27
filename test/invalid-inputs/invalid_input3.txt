@@ -1,4 +1,0 @@
-bool flag = true;
-bool other = false;
-bool result = flag + other;
-

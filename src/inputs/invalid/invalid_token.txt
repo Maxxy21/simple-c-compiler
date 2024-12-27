@@ -1,0 +1,1 @@
+gibberish  // Error: Unrecognized token

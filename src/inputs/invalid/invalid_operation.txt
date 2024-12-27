@@ -1,0 +1,3 @@
+bool flag = true;
+bool other = false;
+bool result = flag + other;  // Error: Cannot add booleans

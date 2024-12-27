@@ -1,0 +1,27 @@
+// Arithmetic Operations
+int a = 15;
+int b = 3;
+int result;
+
+result = a + b;
+print result;      // Prints 18
+
+result = a - b;
+print result;      // Prints 12
+
+result = a * b;
+print result;      // Prints 45
+
+result = a / b;
+print result;      // Prints 5
+
+// Boolean Operations
+bool test = true;
+bool other = false;
+bool final;
+
+final = test && other;
+print final;            // Prints false
+
+final = test || other;
+print final;            // Prints true
