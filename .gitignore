@@ -1,0 +1,54 @@
+# Flex and Bison generated files
+lex.yy.c
+y.tab.c
+y.tab.h
+parser.tab.c
+parser.tab.h
+
+# CMake generated files
+debug.log
+src/nul
+
+# Compiled Object files
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
+compiler.exe
+compiler.out
+
+# IDE specific files (CLion)
+.idea/
+cmake-build-*/
+CMakeFiles/
+*.iml
+
+# Build directory
+build/
+bin/
+
+# Windows specific
+*.dll
+*.lib
+*.exp
+
+# Visual Studio specific
+.vs/
+*.vcxproj*
+*.sln
+Debug/
+Release/
+x64/
+x86/
+
+# Temporary files
+*.log
+*.tmp
+*~
+
+# Other common files to ignore
+.DS_Store
+Thumbs.db
