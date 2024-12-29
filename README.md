@@ -214,13 +214,34 @@ print (12 and true);       // Invalid types for AND
 
 ## Building and Running
 
-### Prerequisites:
-- Flex
-- Bison (YACC)
-- GCC
-- Make
+### Prerequisites
 
-### Build Commands:
+#### For Unix/Linux/MacOS:
+1. Install the required tools using your package manager:
+   ```bash
+   # For Ubuntu:
+   sudo apt-get update
+   sudo apt-get install flex bison gcc make
+
+   # For MacOS with Homebrew:
+   brew install flex bison gcc make
+   ```
+
+#### For Windows:
+1. Install GCC (MinGW):
+   - Download MinGW installer from https://sourceforge.net/projects/mingw/
+   - Install with basic setup (mingw32-base)
+   - Add `C:\MinGW\bin` to your PATH
+
+2. Install Flex and Bison:
+   - Download from https://gnuwin32.sourceforge.net/packages/flex.htm
+   - Download from https://gnuwin32.sourceforge.net/packages/bison.htm
+   - Install both packages
+   - Add `C:\GnuWin32\bin` to your PATH
+
+### Build Commands
+
+#### For Unix/Linux/MacOS:
 ```bash
 # Using make
 make clean
@@ -229,17 +250,41 @@ make
 # Manual build
 flex lexer.l
 bison -d parser.y
+gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler
+```
+
+#### For Windows:
+```bash
+# Using make
+mingw32-make clean
+mingw32-make
+
+# Manual build
+flex lexer.l
+bison -d parser.y
 gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler.exe
 ```
 
-### Running the Compiler:
-```bash
-# With input file
-./
+### Running the Compiler
 
+#### For Unix/Linux/MacOS:
+```bash
 # Interactive mode
-./compiler.exe
+./compiler
+
+# With input file
+./compiler < input_file.txt
 ```
+
+#### For Windows:
+```bash
+# Interactive mode
+compiler.exe
+
+# With input file
+compiler.exe < input_file.txt
+```
+
 
 ### Common Error Messages:
 - "Variable already declared" - Attempting to redeclare a variable

@@ -10,3 +10,13 @@ clean:
 	if exist parser.tab.c del parser.tab.c
 	if exist parser.tab.h del parser.tab.h
 	if exist compiler.exe del compiler.exe
+
+
+#UNIX Version
+#all:
+#	flex lexer.l
+#	bison -d parser.y
+#	gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler
+#
+#clean:
+#	rm -f lex.yy.c parser.tab.c parser.tab.h compiler
