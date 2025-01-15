@@ -1,6 +1,7 @@
 # Language Grammar
 
 ## Program Structure
+
 program -> statement_list
 | ε
 
@@ -8,6 +9,7 @@ statement_list -> statement
 | statement_list statement
 
 ## Statements
+
 statement -> declaration ;
 | assignment ;
 | if_statement
@@ -16,6 +18,7 @@ statement -> declaration ;
 | return_statement ;
 
 ## Declarations and Assignments
+
 declaration -> type_specifier IDENTIFIER
 | type_specifier IDENTIFIER = expression
 
@@ -63,6 +66,7 @@ factor -> INT_LITERAL
 | - factor
 
 ## Terminals
+
 INT_LITERAL -> [0-9]+
 BOOL_LITERAL -> true | false
 IDENTIFIER -> [a-zA-Z][a-zA-Z0-9_]*

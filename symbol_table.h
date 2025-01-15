@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-// Define data types for our language
+// Define data types for the language
 typedef enum {
     TYPE_INT,
     TYPE_BOOL,
@@ -35,4 +35,4 @@ void add_symbol(Symbol* symbol);
 void print_symbol_table(void);
 void free_symbol_table(void);
 
-#endif // SYMBOL_TABLE_H
+#endif 

@@ -17,4 +17,4 @@ Symbol* and(Symbol* a, Symbol* b);
 Symbol* or(Symbol* a, Symbol* b);
 Symbol* not(Symbol* a);
 
-#endif // OPERATIONS_H
+#endif 

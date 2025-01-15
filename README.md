@@ -4,7 +4,7 @@ This compiler implements a subset of the C programming language focusing on fund
 
 ## Features
 
-### Core Features:
+### Core Features
 
 - Basic data types (int, bool)
 - Variable declarations and assignments
@@ -14,7 +14,7 @@ This compiler implements a subset of the C programming language focusing on fund
 - Control structures (if-else, while)
 - Print and return statements
 
-### Type System:
+### Type System
 
 - Static type checking
 - Type verification for operations
@@ -46,7 +46,7 @@ if_statement -> IF ( expression ) { statement_list }
               | IF ( expression ) { statement_list } ELSE { statement_list }
 
 while_statement -> WHILE ( expression ) { statement_list }
-```
+```bnf
 
 ## Example Programs
 
@@ -73,7 +73,7 @@ while (flag) {
 }
 
 print x;    // Will print 10
-```
+```c
 This example demonstrates:
 - Variable initialization
 - If-else statements
@@ -111,8 +111,10 @@ print final;            // Prints false
 
 final = test || other;  
 print final;            // Prints true
-```
+```c
+
 This example shows:
+
 - All arithmetic operations
 - Logical operations
 - Mixed declarations and assignments
@@ -121,17 +123,21 @@ This example shows:
 ### Invalid Programs
 
 #### 1. Type Mismatch (inputs/invalid/type_mismatch.txt)
+
 ```c
 int x = 5;
 bool y = x;  // Error: Cannot initialize bool with int
 ```
+
 Error: Type mismatch in initialization - Cannot assign integer value to boolean variable
 
 #### 2. Undefined Variable (inputs/invalid/undefined_var.txt)
+
 ```c
 int a = 5;
 b = 10;  // Error: b not declared
 ```
+
 Error: Variable 'b' has not been defined
 
 #### 3. Invalid Operation (inputs/invalid/invalid_operation.txt)
@@ -150,8 +156,7 @@ Error: Cannot perform addition between boolean operands
 int x = 5;
 int y = 0;
 int result = x / y;  // Error: Division by zero
-```
-
+```c
 Error: Division by zero
 
 #### 5. Variable Redeclaration (inputs/invalid/var_redeclaration.txt)
@@ -159,17 +164,18 @@ Error: Division by zero
 ```c
 int x = 5;
 int x = 10;  // Error: x already declared
-```
-
+```c
 Error: Variable 'x' already declared
 
 #### 6. Invalid Token (inputs/invalid/invalid_token.txt)
+
 ```c
 gibberish  // Error: Unrecognized token
-```
+```c
 Error: Lexical error - Unrecognized character
 
 ### Directory Structure for input files
+
 ```
 inputs/
 ├── valid/
@@ -204,30 +210,33 @@ while (flag) {
         flag = false;
     }
 }
-```
-
+```c
 ## Type Rules and Restrictions
 
-### Type Rules:
+### Type Rules
+
 - Arithmetic operations (+, -, *, /) only work with integers
 - Logical operations (and, or, not) only work with booleans
 - Comparison operations return boolean values
 - Variables must be declared before use
 
-### Invalid Operations:
+### Invalid Operations
+
 ```c
 x = 5 + true;              // Cannot mix int and bool
 bool result = 5 or 5;      // Logical operations need booleans
 int res = true + true;     // Cannot add booleans
 print (12 and true);       // Invalid types for AND
-```
+```c
 
 ## Building and Running
 
 ### Prerequisites
 
-#### For Unix/Linux/MacOS:
+#### For Unix/Linux/MacOS
+
 1. Install the required tools using your package manager:
+
    ```bash
    # For Ubuntu:
    sudo apt-get update
@@ -237,7 +246,8 @@ print (12 and true);       // Invalid types for AND
    brew install flex bison gcc make
    ```
 
-#### For Windows:
+#### For Windows
+
 1. Install GCC (MinGW):
    - Download MinGW installer from https://sourceforge.net/projects/mingw/
    - Add `C:\MinGW\bin` to your PATH
@@ -250,7 +260,8 @@ print (12 and true);       // Invalid types for AND
 
 ### Build Commands
 
-#### For Unix/Linux/MacOS:
+#### For Unix/Linux/MacOS
+
 ```bash
 # Using make
 make clean
@@ -262,7 +273,8 @@ bison -d parser.y
 gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler
 ```
 
-#### For Windows:
+#### For Windows
+
 ```bash
 # Using make
 mingw32-make clean
@@ -276,7 +288,8 @@ gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler.exe
 
 ### Running the Compiler
 
-#### For Unix/Linux/MacOS:
+#### For Unix/Linux/MacOS
+
 ```bash
 # Interactive mode
 ./compiler
@@ -285,7 +298,8 @@ gcc lex.yy.c parser.tab.c symbol_table.c operations.c -o compiler.exe
 ./compiler < input_file.txt
 ```
 
-#### For Windows:
+#### For Windows
+
 ```bash
 # Interactive mode
 compiler.exe
@@ -295,7 +309,8 @@ compiler.exe < input_file.txt
 ```
 
 
-### Common Error Messages:
+### Common Error Messages
+
 - "Variable already declared" - Attempting to redeclare a variable
 - "Undefined variable" - Using a variable before declaration
 - "Type mismatch" - Invalid type in operation or assignment
@@ -303,7 +318,8 @@ compiler.exe < input_file.txt
 
 ## Implementation Details
 
-### Components:
+### Components
+
 1. Lexical Analyzer (lexer.l)
     - Tokenizes input
     - Handles comments and whitespace
@@ -324,8 +340,9 @@ compiler.exe < input_file.txt
     - Comparison operations
 
 ## Limitations
+
 - No function declarations/calls
 - No arrays or pointers
 - Limited to int and bool types
 - Single scope (no nested scopes)
-- Control structures are parsed but execution flow is not fully implemented
+  

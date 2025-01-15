@@ -21,7 +21,7 @@ WHITESPACE  [ \t\r]
 
 %%
 
-"//".*          ; /* Single line comments - just skip them */
+"//".*          ; /* Single line comments - skips them */
 {WHITESPACE}+   ; /* Skip whitespace */
 \n              { line_number++; }
 
