@@ -5,6 +5,7 @@ This compiler implements a subset of the C programming language focusing on fund
 ## Features
 
 ### Core Features:
+
 - Basic data types (int, bool)
 - Variable declarations and assignments
 - Arithmetic operations (+, -, *, /)
@@ -14,6 +15,7 @@ This compiler implements a subset of the C programming language focusing on fund
 - Print and return statements
 
 ### Type System:
+
 - Static type checking
 - Type verification for operations
 - Error reporting with line numbers
@@ -51,6 +53,7 @@ while_statement -> WHILE ( expression ) { statement_list }
 ### Valid Programs
 
 #### 1. Control Structures (inputs/valid/control_flow.txt)
+
 ```c
 int x = 5;
 int y = 10;
@@ -79,6 +82,7 @@ This example demonstrates:
 - Arithmetic operations
 
 #### 2. Operations Test (inputs/valid/operations_test.txt)
+
 ```c
 // Arithmetic Operations
 int a = 15;
@@ -131,26 +135,32 @@ b = 10;  // Error: b not declared
 Error: Variable 'b' has not been defined
 
 #### 3. Invalid Operation (inputs/invalid/invalid_operation.txt)
+
 ```c
 bool flag = true;
 bool other = false;
 bool result = flag + other;  // Error: Cannot add booleans
 ```
+
 Error: Cannot perform addition between boolean operands
 
 #### 4. Division by Zero (inputs/invalid/div_by_zero.txt)
+
 ```c
 int x = 5;
 int y = 0;
 int result = x / y;  // Error: Division by zero
 ```
+
 Error: Division by zero
 
 #### 5. Variable Redeclaration (inputs/invalid/var_redeclaration.txt)
+
 ```c
 int x = 5;
 int x = 10;  // Error: x already declared
 ```
+
 Error: Variable 'x' already declared
 
 #### 6. Invalid Token (inputs/invalid/invalid_token.txt)
@@ -230,7 +240,6 @@ print (12 and true);       // Invalid types for AND
 #### For Windows:
 1. Install GCC (MinGW):
    - Download MinGW installer from https://sourceforge.net/projects/mingw/
-   - Install with basic setup (mingw32-base)
    - Add `C:\MinGW\bin` to your PATH
 
 2. Install Flex and Bison:
