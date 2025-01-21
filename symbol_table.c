@@ -3,22 +3,28 @@
 #include <string.h>
 #include "symbol_table.h"
 
-extern int line_number;  // line number from lexer.l
+// Used for error reporting - gets line number from lexer
+extern int line_number;
+// Our global symbol table
 static SymbolTable* table;
 
+// Creates empty symbol table for storing variables
 void init_symbol_table(void) {
     table = (SymbolTable*)malloc(sizeof(SymbolTable));
     table->head = NULL;
     table->tail = NULL;
 }
 
+// Creates a new symbol with given name and type
+// Parameters: name - variable name, type - data type (int/bool)
+// Returns: Pointer to the new symbol
 Symbol* create_symbol(char* name, DataType type) {
     Symbol* symbol = (Symbol*)malloc(sizeof(Symbol));
     symbol->name = strdup(name);
     symbol->type = type;
     symbol->next = NULL;
 
-    // Initialize default values
+    // Set default value based on type
     if (type == TYPE_INT) {
         symbol->value.int_val = 0;
     } else if (type == TYPE_BOOL) {
@@ -28,6 +34,9 @@ Symbol* create_symbol(char* name, DataType type) {
     return symbol;
 }
 
+// Searches for a variable in the symbol table
+// Parameters: name - name of variable to find
+// Returns: Pointer to symbol if found, NULL if not found
 Symbol* lookup_symbol(char* name) {
     Symbol* current = table->head;
     while (current != NULL) {
@@ -39,8 +48,11 @@ Symbol* lookup_symbol(char* name) {
     return NULL;
 }
 
+// Adds a new symbol to the table
+// Checks if variable is already declared first
+// Parameters: symbol - pointer to symbol to add
 void add_symbol(Symbol* symbol) {
-    // Check if symbol already exists
+    // Check if variable already exists
     if (lookup_symbol(symbol->name) != NULL) {
         fprintf(stderr, "Error at line %d: Variable '%s' already declared\n",
                 line_number, symbol->name);
@@ -59,6 +71,7 @@ void add_symbol(Symbol* symbol) {
     }
 }
 
+// Frees all memory used by the symbol table
 void free_symbol_table(void) {
     Symbol* current = table->head;
     while (current != NULL) {
@@ -71,6 +84,8 @@ void free_symbol_table(void) {
     table = NULL;
 }
 
+// Prints all variables and their values
+// Used for debugging
 void print_symbol_table(void) {
     Symbol* current = table->head;
     printf("\nSymbol Table Contents:\n");

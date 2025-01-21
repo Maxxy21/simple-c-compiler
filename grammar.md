@@ -22,8 +22,7 @@ statement -> declaration ;
 declaration -> type_specifier IDENTIFIER
 | type_specifier IDENTIFIER = expression
 
-type_specifier -> int
-| bool
+type_specifier -> int | bool
 
 assignment -> IDENTIFIER = expression
 

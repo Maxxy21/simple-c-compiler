@@ -6,18 +6,20 @@
 #include "parser.tab.h"
 
 void yyerror(char *);
+// Track current line number for error reporting
 int line_number = 1;
 %}
 
-%option nounput
-%option noinput
-%option noyywrap
+// Flex options
+%option nounput   // Don't generate unput function
+%option noinput   // Don't generate input function
+%option noyywrap  // Don't use yywrap function
 
-DIGIT       [0-9]
-INT         {DIGIT}+
-LETTER      [a-zA-Z]
-ID          {LETTER}({LETTER}|{DIGIT})*
-WHITESPACE  [ \t\r]
+DIGIT       [0-9]                           // Single digit
+INT         {DIGIT}+                        // Integer number
+LETTER      [a-zA-Z]                        // Single letter
+ID          {LETTER}({LETTER}|{DIGIT})*     // Identifier pattern
+WHITESPACE  [ \t\r]                         // Whitespace characters
 
 %%
 
