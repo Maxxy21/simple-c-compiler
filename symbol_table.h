@@ -3,28 +3,30 @@
 
 #include <stdbool.h>
 
-// Define data types for the language
+// Data types
 typedef enum {
-    TYPE_INT,
-    TYPE_BOOL,
-    TYPE_ERROR
+    TYPE_INT,    // Integer values
+    TYPE_BOOL,   // Boolean values (true/false)
+    TYPE_ERROR   // Used for error handling
 } DataType;
 
-// Symbol structure for variables
+// Represents a single variable/symbol in our compiler
+// Stores the name, type, and value of the variable
 typedef struct Symbol {
-    char* name;
-    DataType type;
+    char* name;              // Variable name/identifier
+    DataType type;           // Variable type (int/bool)
     union {
-        int int_val;
-        bool bool_val;
+        int int_val;         // Value if type is int
+        bool bool_val;       // Value if type is bool
     } value;
-    struct Symbol* next;
+    struct Symbol* next;     // Points to next symbol in list
 } Symbol;
 
-// Symbol table structure
+// Contains all variables/symbols in our program
+// Implemented as a linked list for dynamic storage
 typedef struct {
-    Symbol* head;
-    Symbol* tail;
+    Symbol* head;    // First symbol in the list
+    Symbol* tail;    // Last symbol in the list
 } SymbolTable;
 
 // Function declarations
@@ -35,4 +37,4 @@ void add_symbol(Symbol* symbol);
 void print_symbol_table(void);
 void free_symbol_table(void);
 
-#endif 
+#endif
