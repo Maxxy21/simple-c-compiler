@@ -93,7 +93,7 @@ declaration: type_specifier IDENTIFIER {
             }
           ;
 
-// Data types supported by our language
+// Data types
 type_specifier: INT  { $$ = TYPE_INT; }
               | BOOL { $$ = TYPE_BOOL; }
               ;
