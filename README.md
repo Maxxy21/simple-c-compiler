@@ -400,14 +400,3 @@ Potential areas for extension:
 ## Contributing
 
 This is an educational project demonstrating compiler construction fundamentals. Feel free to fork and extend with additional features.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-Built using:
-- **Flex** - Fast lexical analyzer generator
-- **Bison** - GNU parser generator
-- **GCC** - GNU Compiler Collection
