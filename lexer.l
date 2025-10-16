@@ -1,4 +1,13 @@
 %{
+/**
+ * @file lexer.l
+ * @brief Flex lexical analyzer specification for the C-like language
+ *
+ * Tokenizes input source code into terminals for the parser.
+ * Handles keywords, identifiers, literals, operators, and comments.
+ * Tracks line numbers for error reporting.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,7 +15,7 @@
 #include "parser.tab.h"
 
 void yyerror(char *);
-int line_number = 1;
+int line_number = 1;  // Global line counter for error messages
 %}
 
 %option nounput

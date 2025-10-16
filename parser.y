@@ -1,4 +1,12 @@
 %{
+/**
+ * @file parser.y
+ * @brief Bison parser specification for the C-like language
+ *
+ * Implements the grammar rules, semantic actions, type checking,
+ * and expression evaluation for the compiler.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "symbol_table.h"
@@ -208,6 +216,7 @@ void yyerror(const char *s) {
 int main(void) {
     init_symbol_table();
     yyparse();
+    free_temp_symbols();  // Free temporary symbols created during expression evaluation
     free_symbol_table();
     return 0;
 }

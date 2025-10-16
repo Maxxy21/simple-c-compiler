@@ -35,4 +35,8 @@ void add_symbol(Symbol* symbol);
 void print_symbol_table(void);
 void free_symbol_table(void);
 
+// Temporary symbol management
+void track_temp_symbol(Symbol* temp);
+void free_temp_symbols(void);
+
 #endif 

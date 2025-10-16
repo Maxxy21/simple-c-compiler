@@ -1,17 +1,41 @@
+/**
+ * @file operations.c
+ * @brief Type-checked operation implementations for the compiler
+ *
+ * This file implements all arithmetic, logical, and comparison operations
+ * with strict type checking. All operations verify operand types and
+ * report errors with line numbers if type mismatches occur.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "operations.h"
 
-extern int line_number; //line number from lexer.l
+extern int line_number; // Current line number from lexer.l
 
+/**
+ * Creates a temporary symbol to hold intermediate expression results
+ * @param type The data type for the temporary symbol
+ * @return Pointer to newly created temporary symbol
+ *
+ * Temporary symbols are named _temp0, _temp1, etc. and are tracked
+ * separately for memory cleanup.
+ */
 static Symbol *create_temp_result(DataType type) {
     static int temp_counter = 0;
     char temp_name[32];
     sprintf(temp_name, "_temp%d", temp_counter++);
-    return create_symbol(temp_name, type);
+    Symbol* temp = create_symbol(temp_name, type);
+    track_temp_symbol(temp);  // Track for cleanup
+    return temp;
 }
 
+/**
+ * Converts DataType enum to human-readable string
+ * @param type The DataType to convert
+ * @return String representation of the type
+ */
 static const char *get_type_name(DataType type) {
     switch (type) {
         case TYPE_INT: return "int";
@@ -20,6 +44,13 @@ static const char *get_type_name(DataType type) {
     }
 }
 
+/**
+ * Performs integer addition with type checking
+ * @param a First operand
+ * @param b Second operand
+ * @return Temporary symbol containing the sum
+ * @note Both operands must be TYPE_INT, otherwise program exits with error
+ */
 Symbol *addition(Symbol *a, Symbol *b) {
     if (a->type != TYPE_INT || b->type != TYPE_INT) {
         fprintf(stderr, "Error at line %d: Cannot perform addition between '%s' (%s) and '%s' (%s)\n",
